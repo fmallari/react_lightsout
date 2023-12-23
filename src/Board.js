@@ -33,7 +33,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
     /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
     function createBoard() {
-        let intialBoard = [];
+        let initialBoard = [];
         for (let y=0; y <nrows; y++) {
             let row =[];
             for (let x = 0; x < ncols; x++) {
@@ -41,7 +41,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
             }
             initialBoard.push(row);
         }
-        return intialBoard;
+        return initialBoard;
     }
 
     /* Check if player has won */
@@ -61,6 +61,48 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
                     boardCopy[y][x] = !boardCopy[y][x];
                 }
             };
-        })
+
+            const boardCopy = oldBoard.map(row => [...row]);
+
+            flipCell(y, x, boardCopy);
+            flipCell(y, x - 1, boardCopy);
+            flipCell(y, x + 1, boardCopy);
+            flipCell(y - 1, x, boardCopy);
+            flipCell(y + 1, x, boardCopy);
+
+            return boardCopy;
+        });
     }
+
+    //if game is won, show a winning message and render nothing else
+    if (hasWon()) {
+        return <div>You Win!</div>;
+    }
+
+    // make table board: rows of Cell components
+
+    let tblBoard = [];
+
+    for (let y = 0; y < nrows; y++) {
+        let row = [];
+        for(let x = 0; y < nrows; x++) {
+            let coord = `${y}-${x}`;
+            row.push(
+                <Cell
+                key={coord}
+                isLit={board[y][x]}
+                flipsCellsAroundMe={() => flipCellsAround(coord)}
+                />
+            );
+        }
+        tblBoard.push(<tr key={y}>{row}</tr>);
+    }
+
+    return (
+        <table className="Board">
+            <tbody>{tblBoard}</tbody>
+        </table>
+    );
 }
+
+export default Board;
