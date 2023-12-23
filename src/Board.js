@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Cell from "./Cell";
-import"./Board.css";
+import "./Board.css";
 
 /** Game board of Lights out.
  *
@@ -34,7 +34,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
 
     function createBoard() {
         let initialBoard = [];
-        for (let y=0; y <nrows; y++) {
+        for (let y = 0; y < nrows; y++) {
             let row =[];
             for (let x = 0; x < ncols; x++) {
                 row.push(Math.random() < chanceLightStartsOn);
@@ -46,7 +46,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
 
     /* Check if player has won */
     function hasWon() {
-        return board.ecvery(row => row.every(cell => !cell));
+        return board.every(row => row.every(cell => !cell));
     }
 
     /* Flip cells around a given cell */
@@ -54,7 +54,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
         setBoard(oldBoard => {
             const [y, x] = coord.split("-").map(Number);
 
-            const flipCell = (y, x, BoardCopy) => {
+            const flipCell = (y, x, boardCopy) => {
                 // if this coord is actually on board, flip it
 
                 if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
